@@ -3,242 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>家庭慢箋管理系統 v25.2 - 功能完備版</title>
+    <title>家庭慢箋管理系統 v25.1 - 強化版</title>
     <style>
         :root {
-            --bg-body: #e5e9f0;
+            --bg-body: #e5e9f0;         /* 更深一點的底色，讓卡片更跳 */
             --bg-card: #ffffff;
             --text-main: #1a202c;
-            --text-sub: #4a5568;
-            --color-primary: #2b6cb0;
-            --color-success: #276749;
+            --text-sub: #4a5568;        /* 提高灰色能見度 */
+            
+            --color-primary: #2b6cb0;   /* 增加藍色飽和度 */
+            --color-success: #276749;   /* 更深的綠，閱讀更容易 */
             --color-warning: #c05621;
             --color-danger: #c53030;
             --border-color: #cbd5e0;
+            --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.08);
             --radius-md: 16px;
             --radius-sm: 10px;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { 
-            font-family: -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; 
-            background-color: var(--bg-body); color: var(--text-main); 
-            padding: 15px; max-width: 800px; margin: 0 auto; font-size: 17px;
+            font-family: -apple-system, system-ui, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            padding: 15px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            line-height: 1.5;
+            font-size: 17px; /* 整體字體微調大 */
         }
 
-        h2 { text-align: center; color: var(--color-primary); font-weight: 900; margin: 20px 0; }
+        h2 { 
+            text-align: center; 
+            color: var(--color-primary); 
+            margin: 20px 0 25px; 
+            font-weight: 900; 
+            font-size: 1.8rem;
+        }
 
+        /* 頂部操作按鈕加大 */
+        .backup-zone { 
+            display: flex; gap: 10px; margin-bottom: 25px; 
+        }
+        .btn-backup { 
+            flex: 1; padding: 12px; font-size: 17px; 
+            background: white; border: 2px solid var(--border-color); 
+            border-radius: var(--radius-sm); font-weight: 700;
+        }
+
+        /* 輸入區卡片 */
         .box { 
-            background: var(--bg-card); padding: 22px; border-radius: var(--radius-md); 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 25px; border: 1px solid var(--border-color); 
+            background: var(--bg-card); 
+            padding: 22px; 
+            border-radius: var(--radius-md); 
+            box-shadow: var(--shadow-card); 
+            margin-bottom: 25px; 
+            border: 1px solid var(--border-color); 
         }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        /* 輸入框層級強化 */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
 
-        label { display: block; font-weight: 800; font-size: 14px; margin-bottom: 5px; color: var(--text-sub); }
+        label { display: block; font-weight: 800; font-size: 15px; color: var(--text-main); margin-bottom: 8px; }
         input { 
-            width: 100%; padding: 12px; border: 2px solid #edf2f7; border-radius: var(--radius-sm); 
-            font-size: 17px; font-weight: 600; background-color: #f7fafc; 
+            width: 100%; padding: 14px; 
+            border: 2px solid #edf2f7; 
+            border-radius: var(--radius-sm); 
+            font-size: 18px; /* 加大輸入文字 */
+            font-weight: 600;
+            background-color: #f7fafc; 
         }
-        input:focus { outline: none; border-color: var(--color-primary); background-color: white; }
-
-        .btn-main { padding: 16px; width: 100%; font-size: 18px; font-weight: 900; border-radius: var(--radius-sm); border: none; cursor: pointer; margin-top: 10px;}
-        .btn-save { background-color: var(--color-success); color: white; }
+        input:focus { outline: none; border-color: var(--color-primary); background-color: white;}
         
-        /* 基準日控制列 */
+        /* 主要按鈕 */
+        .btn-main { padding: 18px; width: 100%; font-size: 18px; font-weight: 900; border-radius: var(--radius-sm); border: none; cursor: pointer;}
+        .btn-save { background-color: var(--color-success); color: white; margin-top: 10px; }
+        .btn-calc { background-color: #edf2f7; color: var(--color-primary); border: 2px solid var(--border-color); margin-top: 10px;}
+
+        /* 基準日區塊 - 強化視覺區隔 */
         .date-control-bar { 
-            background: #2d3748; color: white; padding: 15px; border-radius: var(--radius-md); 
-            display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+            background: #2d3748; color: white; padding: 15px 20px; 
+            border-radius: var(--radius-md); display: flex; align-items: center; gap: 15px;
+            margin-bottom: 25px;
         }
+        .date-control-bar label { color: #a0aec0; margin: 0; flex-shrink: 0; }
+        .date-control-bar input { background: #4a5568; border: none; color: white; width: auto; padding: 8px 12px;}
 
-        /* 藥物分組 */
-        .group-box { border-top: 8px solid var(--color-primary); margin-bottom: 30px; }
-        .med-name { font-size: 24px; font-weight: 900; color: #000; display: block; }
-        .user-tag { background: #2d3748; color: white; padding: 2px 10px; border-radius: 6px; font-size: 13px; }
-
-        /* 卡片內容 */
-        .card { background: #f8fafc; border-radius: var(--radius-sm); padding: 18px; margin-bottom: 15px; border: 2px solid #e2e8f0; }
-        .active-card { border-left: 8px solid var(--color-primary); background: white; }
+        /* 藥物群組卡片 */
+        .group-box { 
+            border-top: 8px solid var(--color-primary); 
+            padding: 20px; margin-bottom: 35px;
+        }
+        .group-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 15px;
+        }
         
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f7fafc; padding: 12px; border-radius: 10px; margin-top: 10px;}
-        .highlight { color: var(--color-danger); font-size: 22px; font-weight: 900; }
-
-        /* 修改面板 */
-        .edit-panel { 
-            display: none; background: #fffaf0; border: 2px dashed #ed8936; 
-            padding: 15px; border-radius: 10px; margin-top: 10px; 
+        .user-tag { background: #2d3748; color: white; padding: 4px 12px; border-radius: 6px; font-size: 14px; font-weight: 900; }
+        .med-name { font-size: 26px; font-weight: 900; color: #000; margin-top: 5px; display: block; }
+        
+        .total-hand-badge { 
+            background: #fff5f5; color: var(--color-danger); padding: 12px 18px; 
+            border-radius: var(--radius-sm); font-weight: 900; border: 2px solid #feb2b2; text-align: center; font-size: 20px;
         }
-        .edit-active { display: block; }
+        .total-hand-badge small { display: block; font-size: 12px; color: var(--text-sub); margin-bottom: 2px;}
 
-        .btn-sm { padding: 8px 12px; font-size: 14px; font-weight: 700; cursor: pointer; border-radius: 6px; border: 1px solid var(--border-color); background: white; }
-        .log-tag { display: inline-block; background: #e2e8f0; padding: 3px 8px; border-radius: 4px; font-size: 14px; margin: 2px; }
+        /* 單張箋卡片樣式 */
+        .card { 
+            background: #f8fafc; border-radius: var(--radius-sm); padding: 20px; 
+            margin-bottom: 15px; border: 2px solid #e2e8f0;
+        }
+        .active-card { border-left: 8px solid var(--color-primary); background-color: white; border-color: #bee3f8; }
+        
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .card-time-range { font-size: 16px; font-weight: 800; color: #2d3748; }
+
+        /* 進度條 */
+        .progress-container { width: 100%; background: #edf2f7; border-radius: 10px; height: 16px; margin: 10px 0; overflow: hidden; }
+        .progress-bar { height: 100%; transition: width 0.6s ease; }
+
+        /* 資訊格 */
+        .info-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
+            background: #f7fafc; padding: 15px; border-radius: 10px; 
+        }
+        .info-label { font-size: 14px; color: var(--text-sub); font-weight: 700; margin-bottom: 4px; display: block;}
+        .info-value { font-size: 19px; font-weight: 800; color: var(--text-main);}
+        .highlight { color: var(--color-danger); font-size: 24px; }
+        
+        .status-badge { padding: 6px 12px; border-radius: 8px; font-size: 14px; font-weight: 900; }
+        .expired { background: #fed7d7; color: #9b2c2c; }
+        .active { background: #c6f6d5; color: #22543d; }
+
+        /* 按鈕小工具 */
+        .btn-sm { padding: 10px 14px; font-size: 15px; font-weight: 700; cursor: pointer; border-radius: 8px; border: 1px solid var(--border-color); background: white; }
+        .log-tag { display: inline-block; background: #edf2f7; border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 6px; font-size: 15px; font-weight: 600; margin-right: 5px; margin-bottom: 5px;}
+
+        #tempResult { font-size: 20px; font-weight: 900; margin-top: 15px; border-radius: 12px; }
     </style>
 </head>
 <body>
 
 <h2>🏠 家庭慢箋管理系統</h2>
 
+<div class="backup-zone">
+    <button class="btn-backup" onclick="exportJSON()">📤 備份紀錄</button>
+    <button class="btn-backup" onclick="document.getElementById('importFile').click()">📥 找回紀錄</button>
+    <input type="file" id="importFile" accept=".json" onchange="importJSON(event)" style="display:none">
+</div>
+
 <div class="box">
     <div class="grid">
-        <div><label>對象</label><input type="text" id="userName" placeholder="例如：媽媽"></div>
-        <div><label>藥名</label><input type="text" id="medName" placeholder="例如：降血糖"></div>
-        <div><label>起使領藥日</label><input type="date" id="startDate"></div>
-        <div><label>單次天數</label><input type="number" id="days" value="30"></div>
-        <div><label>總次數</label><input type="number" id="totalTimes" value="3"></div>
-        <div><label>已領次數</label><input type="number" id="usedTimes" value="1"></div>
+        <div>
+            <label>對象名稱</label>
+            <input type="text" id="userName" placeholder="例如：爸爸">
+        </div>
+        <div>
+            <label>藥物名稱</label>
+            <input type="text" id="medName" placeholder="例如：血壓藥">
+        </div>
     </div>
-    <button class="btn-save btn-main" onclick="saveRecord()">💾 儲存新慢箋</button>
+    
+    <div class="grid" style="margin-top:15px;">
+        <div>
+            <label>第 1 次領藥日</label>
+            <input type="date" id="startDate">
+        </div>
+        <div>
+            <label>單次天數 (通常30)</label>
+            <input type="number" id="days" value="30">
+        </div>
+    </div>
+    
+    <div class="grid" style="margin-top:15px;">
+        <div>
+            <label>總次數 (通常3)</label>
+            <input type="number" id="totalTimes" value="3">
+        </div>
+        <div>
+            <label>目前已領幾次</label>
+            <input type="number" id="usedTimes" value="1">
+        </div>
+    </div>
+
+    <button class="btn-calc btn-main" onclick="runSimulation()">🧪 僅試算不儲存</button>
+    <button class="btn-save btn-main" onclick="saveRecord()">💾 儲存這張慢箋</button>
+    
+    <div id="tempResult" style="display:none; padding:15px; text-align:center; background:#f0fff4; border:2px solid #c6f6d5;"></div>
 </div>
 
 <div class="date-control-bar">
-    <label style="color:white; margin:0">📆 基準日：</label>
-    <input type="date" id="simDate" style="width:auto; padding:5px;">
-    <button class="btn-sm" onclick="render()">更新檢視</button>
+    <label>📆 基準日：</label>
+    <input type="date" id="simDate">
+    <button class="btn-sm" style="background:var(--color-primary); color:white; border:none;" onclick="renderRecords()">更新資訊</button>
 </div>
 
 <div id="records"></div>
 
 <script>
-    const STORAGE_KEY = "family_med_v25_2";
+    // --- 核心邏輯 (保持原樣，僅更新渲染部分) ---
+    const STORAGE_KEY = "family_med_v25";
     let records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
-    document.getElementById('simDate').value = new Date().toISOString().split('T')[0];
+    
+    const todayStr = new Date().toISOString().split('T')[0];
+    document.getElementById('startDate').value = todayStr;
+    document.getElementById('simDate').value = todayStr;
 
-    function saveRecord() {
+    function exportJSON() {
+        if (records.length === 0) return alert("目前沒有紀錄");
+        const dataStr = JSON.stringify(records, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        const link = document.createElement('a');
+        link.setAttribute('href', dataUri);
+        link.setAttribute('download', `藥物紀錄備份_${new Date().toLocaleDateString()}.json`);
+        link.click();
+    }
+
+    function importJSON(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                if (confirm("匯入將覆蓋現有紀錄，確定嗎？")) {
+                    records = importedData;
+                    sync();
+                    alert("匯入成功");
+                }
+            } catch (err) { alert("讀取失敗"); }
+        };
+        reader.readAsText(file);
+    }
+
+    function calculateV25(r, targetDateStr) {
+        const simDate = new Date(targetDateStr);
+        simDate.setHours(0,0,0,0);
+        const logs = r.logs.map(d => {
+            const dt = new Date(d);
+            dt.setHours(0,0,0,0);
+            return dt;
+        }).sort((a,b) => a - b);
+
+        const firstLogDate = logs[0] || new Date(r.startDate);
+        const endDate = new Date(firstLogDate);
+        endDate.setDate(endDate.getDate() + 89); 
+
+        let totalGapDays = 0;
+        let currentDrugEmptyDate = new Date(logs[0]); 
+        
+        for(let i=0; i < logs.length; i++) {
+            if (i > 0 && logs[i] > currentDrugEmptyDate) {
+                totalGapDays += Math.floor((logs[i] - currentDrugEmptyDate) / 86400000);
+            }
+            let drugStartDate = (i > 0 && logs[i] < currentDrugEmptyDate) ? currentDrugEmptyDate : logs[i];
+            currentDrugEmptyDate = new Date(drugStartDate);
+            currentDrugEmptyDate.setDate(currentDrugEmptyDate.getDate() + r.days);
+        }
+
+        const daysPassed = Math.floor((simDate - firstLogDate) / 86400000);
+        const daysRemaining = 90 - daysPassed; 
+        
+        let hand = (logs.length * r.days - daysPassed) + totalGapDays;
+        hand = Math.max(0, Math.min(logs.length * r.days, hand));
+
+        const progressPercent = Math.min(100, Math.max(0, (daysPassed / 90) * 100));
+        
+        let barColor = "var(--color-primary)"; 
+        if (daysRemaining <= 7) barColor = "var(--color-danger)";
+        else if (daysRemaining <= 14) barColor = "var(--color-warning)";
+
+        const isExpired = simDate > endDate;
+        const format = (d) => d.getFullYear() + "/" + String(d.getMonth()+1).padStart(2,'0') + "/" + String(d.getDate()).padStart(2,'0');
+        
+        return {
+            hand,
+            totalRemain: isExpired ? 0 : Math.max(0, (r.totalTimes - logs.length) * r.days),
+            isExpired,
+            status: isExpired ? "慢箋已失效" : (hand > 0 ? "服用中" : "已斷藥"),
+            range: `${format(firstLogDate)} - ${format(endDate)}`,
+            count: logs.length,
+            percent: progressPercent,
+            barColor
+        };
+    }
+
+    function runSimulation() {
         const r = {
-            id: Date.now(),
-            user: document.getElementById("userName").value || "家人",
-            med: document.getElementById("medName").value || "未命名",
             startDate: document.getElementById("startDate").value,
             days: parseInt(document.getElementById("days").value),
             totalTimes: parseInt(document.getElementById("totalTimes").value),
             logs: Array(parseInt(document.getElementById("usedTimes").value)).fill(document.getElementById("startDate").value)
         };
-        records.push(r);
+        const res = calculateV25(r, document.getElementById('simDate').value);
+        const div = document.getElementById("tempResult");
+        div.style.display = "block";
+        div.innerHTML = `手上餘藥：<span style="color:var(--color-danger)">${res.hand}</span> 天`;
+    }
+
+    function saveRecord() {
+        if(!document.getElementById("startDate").value) return alert("請輸入日期");
+        records.push({
+            id: Date.now(), user: document.getElementById("userName").value || "家人",
+            med: document.getElementById("medName").value || "未命名藥物",
+            startDate: document.getElementById("startDate").value,
+            days: parseInt(document.getElementById("days").value),
+            totalTimes: parseInt(document.getElementById("totalTimes").value),
+            logs: Array(parseInt(document.getElementById("usedTimes").value)).fill(document.getElementById("startDate").value),
+            isEditing: false
+        });
         sync();
     }
 
-    function sync() { localStorage.setItem(STORAGE_KEY, JSON.stringify(records)); render(); }
+    function sync() { localStorage.setItem(STORAGE_KEY, JSON.stringify(records)); renderRecords(); }
 
-    function deleteLog(recId, index) {
-        const r = records.find(x => x.id === recId);
-        r.logs.splice(index, 1);
-        sync();
-    }
-
-    function addLog(recId) {
-        const r = records.find(x => x.id === recId);
-        const date = prompt("輸入領藥日期:", document.getElementById('simDate').value);
-        if(date) { r.logs.push(date); sync(); }
-    }
-
-    function toggleEdit(id) {
-        const el = document.getElementById(`edit-${id}`);
-        el.classList.toggle('edit-active');
-    }
-
-    function updateConfig(id) {
-        const r = records.find(x => x.id === id);
-        r.user = document.getElementById(`edit-user-${id}`).value;
-        r.med = document.getElementById(`edit-med-${id}`).value;
-        r.days = parseInt(document.getElementById(`edit-days-${id}`).value);
-        r.totalTimes = parseInt(document.getElementById(`edit-total-${id}`).value);
-        sync();
-    }
-
-    function calculate(r, targetDateStr) {
-        const simDate = new Date(targetDateStr);
-        simDate.setHours(0,0,0,0);
-        const logs = [...r.logs].map(d => new Date(d).setHours(0,0,0,0)).sort((a,b) => a - b);
-        
-        const firstDate = new Date(r.startDate).setHours(0,0,0,0);
-        const endDate = new Date(firstDate);
-        endDate.setDate(endDate.getDate() + (r.totalTimes * r.days - 1));
-
-        let totalGapDays = 0;
-        let currentEmptyDate = new Date(logs[0]);
-        
-        for(let i=0; i<logs.length; i++){
-            const logDate = new Date(logs[i]);
-            if(i > 0 && logDate > currentEmptyDate) {
-                totalGapDays += Math.floor((logDate - currentEmptyDate)/86400000);
-            }
-            let actualStart = (i > 0 && logDate < currentEmptyDate) ? currentEmptyDate : logDate;
-            currentEmptyDate = new Date(actualStart);
-            currentEmptyDate.setDate(currentEmptyDate.getDate() + r.days);
-        }
-
-        const daysPassed = Math.floor((simDate - firstDate)/86400000);
-        let hand = (logs.length * r.days - daysPassed) + totalGapDays;
-        hand = Math.max(0, Math.min(logs.length * r.days, hand));
-
-        return {
-            hand,
-            range: `${new Date(firstDate).toLocaleDateString()} ~ ${endDate.toLocaleDateString()}`,
-            isExpired: simDate > endDate,
-            count: logs.length
-        };
-    }
-
-    function render() {
+    function renderRecords() {
         const container = document.getElementById("records");
         container.innerHTML = "";
-        const simDate = document.getElementById('simDate').value;
+        const simDateStr = document.getElementById('simDate').value;
 
-        // 按對象藥名分組顯示
         const groups = {};
         records.forEach(r => {
-            const k = `${r.user}-${r.med}`;
-            if(!groups[k]) groups[k] = [];
-            groups[k].push(r);
+            const key = `${r.user}-${r.med}`;
+            if (!groups[key]) groups[key] = [];
+            groups[key].push(r);
         });
 
-        for(let k in groups) {
-            const [u, m] = k.split('-');
-            const gDiv = document.createElement("div");
-            gDiv.className = "box group-box";
-            gDiv.innerHTML = `<span class="user-tag">${u}</span><span class="med-name">${m}</span><hr>`;
-            
-            groups[k].forEach(r => {
-                const c = calculate(r, simDate);
+        Object.keys(groups).sort().forEach(key => {
+            const groupRecords = groups[key].sort((a,b) => new Date(b.startDate) - new Date(a.startDate));
+            const [user, med] = key.split('-');
+            let totalHandSum = 0;
+            groupRecords.forEach(r => totalHandSum += calculateV25(r, simDateStr).hand);
+
+            const groupDiv = document.createElement("div");
+            groupDiv.className = "box group-box";
+            groupDiv.innerHTML = `
+                <div class="group-header">
+                    <div>
+                        <span class="user-tag">${user}</span>
+                        <span class="med-name">${med}</span>
+                    </div>
+                    <div class="total-hand-badge"><small>手上餘藥總計</small>${totalHandSum} 天</div>
+                </div>
+                <div id="sub-${key}"></div>
+            `;
+
+            const subContainer = groupDiv.querySelector(`#sub-${key}`);
+            groupRecords.forEach(r => {
+                const calc = calculateV25(r, simDateStr);
                 const card = document.createElement("div");
-                card.className = `card ${!c.isExpired ? 'active-card' : ''}`;
+                card.className = `card ${!calc.isExpired ? 'active-card' : ''}`;
+                
                 card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start">
-                        <small>📅 慢箋效期: ${c.range}</small>
-                        <div>
-                            <button class="btn-sm" onclick="toggleEdit(${r.id})">⚙️ 修改設定</button>
-                            <button class="btn-sm" style="color:red" onclick="if(confirm('刪除？')){records=records.filter(x=>x.id!=${r.id});sync();}">🗑️</button>
-                        </div>
+                    <div class="card-header">
+                        <span class="card-time-range">📅 效期：${calc.range}</span>
+                        <button class="btn-sm" style="color:var(--color-danger)" onclick="deleteRecord(${r.id})">🗑️ 刪除</button>
                     </div>
-
-                    <div id="edit-${r.id}" class="edit-panel">
-                        <div class="grid">
-                            <div><label>對象</label><input type="text" id="edit-user-${r.id}" value="${r.user}"></div>
-                            <div><label>藥名</label><input type="text" id="edit-med-${r.id}" value="${r.med}"></div>
-                            <div><label>單次天數</label><input type="number" id="edit-days-${r.id}" value="${r.days}"></div>
-                            <div><label>總次數</label><input type="number" id="edit-total-${r.id}" value="${r.totalTimes}"></div>
-                        </div>
-                        <button class="btn-main btn-save" style="margin-top:10px" onclick="updateConfig(${r.id})">完成並儲存</button>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${calc.percent}%; background-color: ${calc.barColor};"></div>
                     </div>
-
+                    
                     <div class="info-grid">
-                        <div style="grid-column: span 2">
-                            <label>領藥紀錄 (點擊可刪除單筆)</label>
-                            ${r.logs.map((l, idx) => `<span class="log-tag" onclick="if(confirm('刪除此筆？')){deleteLog(${r.id},${idx})}">${l} ✕</span>`).join('')}
-                            <button class="btn-sm" onclick="addLog(${r.id})">+ 補錄</button>
+                        <div style="grid-column: span 2; margin-bottom: 5px;">
+                            <span class="info-label">📋 領藥紀錄</span>
+                            <div style="margin-top:5px;">
+                                ${r.logs.map(l=>`<span class="log-tag">${l}</span>`).join('')}
+                                <button class="btn-sm" style="padding:2px 8px; font-size:13px;" onclick="addLog(${r.id})">+ 領藥</button>
+                            </div>
                         </div>
-                        <div><label>手上餘藥</label><span class="highlight">${c.hand} 天</span></div>
-                        <div><label>進度</label><span>已領 ${c.count} / ${r.totalTimes}</span></div>
+                        <div>
+                            <span class="info-label">🔁 領藥進度</span>
+                            <span class="info-value">${calc.count} / ${r.totalTimes} 次</span>
+                        </div>
+                        <div>
+                            <span class="info-label">⏳ 目前狀態</span>
+                            <span class="status-badge ${calc.isExpired ? 'expired' : 'active'}">${calc.status}</span>
+                        </div>
+                        <div>
+                            <span class="info-label">🏠 這張餘藥</span>
+                            <span class="info-value highlight">${calc.hand} 天</span>
+                        </div>
+                        <div>
+                            <span class="info-label">📜 未領藥量</span>
+                            <span class="info-value" style="color:var(--text-sub)">${calc.totalRemain} 天</span>
+                        </div>
                     </div>
                 `;
-                gDiv.appendChild(card);
+                subContainer.appendChild(card);
             });
-            container.appendChild(gDiv);
-        }
+            container.appendChild(groupDiv);
+        });
     }
-    render();
+
+    function addLog(id) {
+        const r = records.find(r => r.id === id);
+        if(r.logs.length >= r.totalTimes) return alert("已領完");
+        const date = prompt("領藥日期:", document.getElementById('simDate').value);
+        if (date) { r.logs.push(date); sync(); }
+    }
+    function deleteRecord(id) { if(confirm("確定刪除？")) { records = records.filter(r => r.id !== id); sync(); } }
+
+    renderRecords();
 </script>
 </body>
 </html>
